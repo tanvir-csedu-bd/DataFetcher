@@ -1,7 +1,6 @@
 package com.spring.datafetcher.service;
 
 import org.junit.Test;
-import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -9,19 +8,15 @@ import java.util.Map;
 import static org.junit.Assert.assertTrue;
 
 public class DataMergerServiceTest {
-    @Autowired
-    private DataMergerService service;
 
-    String URL_1 = "http://jsonplaceholder.typicode.com/users/1";
-    String URL_2 = "http://jsonplaceholder.typicode.com/posts?userId=1";
+    static final String URL_1 = "http://jsonplaceholder.typicode.com/users/1";
+    static final String URL_2 = "http://jsonplaceholder.typicode.com/posts?userId=1";
 
     @Test
     public void test_with_one_url() throws Exception {
         Map<String, Object> response = new DataMergerService().processAndMergeURLResponse(new String[]{URL_1});
-        //response.forEach((key, val)->System.out.println(key+"<=>"+val));
         assertTrue(response.size() > 0);
     }
-
 
     @Test
     public void test_with_two_url() throws Exception {

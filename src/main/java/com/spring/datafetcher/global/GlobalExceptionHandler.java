@@ -8,8 +8,6 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
-import java.util.Arrays;
-
 @ControllerAdvice
 public class GlobalExceptionHandler {
 
@@ -19,7 +17,7 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(Exception.class)
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     public Object defaultExceptionHandler(Exception e) {
-        log.error(Arrays.toString(e.getStackTrace()));
+        log.error(e.getMessage());
         return e.getMessage();
     }
 }

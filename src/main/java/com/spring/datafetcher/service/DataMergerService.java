@@ -31,7 +31,7 @@ public class DataMergerService {
             futures.add(executorService.submit(new URLProcessorService(url)));
         }
         for (Future<Map<String, Object>> future : futures) {
-            urlResponse.putAll(future.get(5, TimeUnit.SECONDS));
+            urlResponse.putAll(future.get(20, TimeUnit.SECONDS));
         }
         executorService.shutdown();
         return urlResponse;
