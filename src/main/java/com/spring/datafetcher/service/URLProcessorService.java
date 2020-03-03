@@ -9,6 +9,11 @@ import java.lang.reflect.Type;
 import java.net.URL;
 import java.util.concurrent.Callable;
 
+/**
+ * This thread class contain service methods which process a REST URL
+ * and retrieve the content from it. Finally convert the content into
+ * provided type class and return the object
+ */
 public class URLProcessorService implements Callable<Object> {
     private URL url;
     private Type type;
