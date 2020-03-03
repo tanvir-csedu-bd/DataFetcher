@@ -28,34 +28,11 @@ public class DataMergerControllerTest {
     private DataMergerService dataMergerServ;
 
     static final String SERVICE_ENDPOINT = "http://127.0.0.1:8080/ProcessURL";
-    static final String[] URLS = {"http://jsonplaceholder.typicode.com/users/1", "http://jsonplaceholder.typicode.com/posts?userId=1"};
-
-    private String toJSON(Object obj) throws JsonProcessingException {
-        return new ObjectMapper().writeValueAsString(obj);
-    }
 
     @Test
     public void checkResponseURL() throws Exception {
-        String inputJson = toJSON(URLS);
-        MvcResult mvcResult = mvc.perform(MockMvcRequestBuilders.post(SERVICE_ENDPOINT)
-                .contentType(MediaType.APPLICATION_JSON_VALUE).content(inputJson)).andReturn();
+        MvcResult mvcResult = mvc.perform(MockMvcRequestBuilders.get(SERVICE_ENDPOINT)).andReturn();
         int status = mvcResult.getResponse().getStatus();
         assertEquals(200, status);
-    }
-
-    @Test
-    public void invalidResponseFormatCheck() throws Exception {
-        String inputJson = toJSON(URLS);
-        MvcResult mvcResult = mvc.perform(MockMvcRequestBuilders.post(SERVICE_ENDPOINT).content(inputJson)).andReturn();
-        int status = mvcResult.getResponse().getStatus();
-        assertEquals(HttpStatus.BAD_REQUEST.value(), status);
-    }
-
-    @Test
-    public void invalidURLCheck() throws Exception {
-        String inputJson = toJSON(new String[]{"http://invalid-url", URLS[0]});
-        MvcResult mvcResult = mvc.perform(MockMvcRequestBuilders.post(SERVICE_ENDPOINT).content(inputJson)).andReturn();
-        int status = mvcResult.getResponse().getStatus();
-        assertEquals(HttpStatus.BAD_REQUEST.value(), status);
     }
 }

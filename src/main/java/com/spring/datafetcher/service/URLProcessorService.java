@@ -1,47 +1,26 @@
 package com.spring.datafetcher.service;
 
-import com.google.gson.*;
-import com.google.gson.reflect.TypeToken;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import com.google.gson.Gson;
 
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.lang.reflect.Type;
 import java.net.URL;
-import java.util.*;
 import java.util.concurrent.Callable;
 
-public class URLProcessorService implements Callable<Map<String, Object>> {
-    private static final Logger log = LoggerFactory.getLogger(URLProcessorService.class);
+public class URLProcessorService implements Callable<Object> {
+    private URL url;
+    private Type type;
 
-    private final URL url;
-
-    public URLProcessorService(String url) throws Exception {
+    public URLProcessorService(String url, Type type) throws Exception {
         this.url = new URL(url);
+        this.type = type;
     }
 
     @Override
-    public Map<String, Object> call() throws Exception {
-        Map<String, Object> response = null;
-        int attempt = 1;
-        while (response == null && attempt++ < 3) {
-            try {
-                String jsonStr = readUrl(url);
-                try {
-                    response = new Gson().fromJson(jsonStr, new TypeToken<Map<String, Object>>() {
-                    }.getType());
-                } catch (JsonSyntaxException ex) {
-                    log.error("Unable to parse data of " + url.toString() + " because of " + ex + ". Trying to generalize the parsing");
-                    response = new HashMap<>();
-                    response.put("CustomKey", new Gson().fromJson(jsonStr, Object.class));
-                }
-            } catch (IOException e) {
-                log.error("Trying to fetch data ", e);
-                Thread.sleep(5000);
-            }
-        }
-        return response;
+    public Object call() throws Exception {
+        return new Gson().fromJson(readUrl(url), type);
     }
 
     private String readUrl(URL url) throws IOException {
